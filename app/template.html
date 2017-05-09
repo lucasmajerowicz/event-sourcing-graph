@@ -2,35 +2,98 @@
 <html>
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
-    <title>THREEJS </title>
-    <style>
-        body {
-            margin: 0px;
-        }
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+            crossorigin="anonymous"></script>
 
-        .info {
-            position: absolute;
-            background-color: black;
-            color: white;
-            text-align: center;
-            top: 0px;
-            width: 100%;
-            z-index: 20;
-        }
-        .info a {
-            color: #00ffff;
-        }
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-        .dg.a { margin-top:35px !important; }
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-    </style>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+
+
 </head>
 <body>
-<div class="info">
-    <a href="https://github.com/lucasmajerowicz/threejs-real-time-example" target="_blank">Real-time Collaboration Application in Three.js</a><br/>
-    Click: add voxel, shift + click: remove voxel
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6" style="background-color:yellow;">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Categories</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-categories">
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Products</div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Visible</th>
+                        <th>Color</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tbody-products">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-6" style="background-color:pink;">
+            <p>Sed ut perspiciatis...</p>
+            <button type="button" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+        </div>
+    </div>
 </div>
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 </body>
 </html>

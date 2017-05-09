@@ -10,7 +10,7 @@ class SetProductCategoryEvent {
         const product = this.catalog.getProduct(this.productId);
         const category = this.catalog.getCategory(this.categoryId);
 
-        product.addCategory(category);
+        product.category = category;
     }
 }
 

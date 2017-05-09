@@ -5,10 +5,11 @@ class AddCatalogEvent {
         this.catalogId = id;
         this.catalogName = catalogName;
         this.name = 'AddCatalogEvent';
+        this.catalog =  new Catalog(this.catalogId, this.catalogName);
     }
 
     process() {
-        return new Catalog(this.catalogId, this.catalogName);
+        return this.catalog;
     }
 }
 

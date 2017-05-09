@@ -1,17 +1,11 @@
 class Product {
-    constructor(id, name, attributes = {}, categories = []) {
+    constructor(id, name, price, visible, color, category) {
         this.id = id;
         this.name = name;
-        this.attributes = attributes;
-        this.categories = categories;
-    }
-
-    addCategory(category) {
-        this.categories.push(category);
-    }
-
-    setAttribute(key, value) {
-        this.attributes[key] = value;
+        this.price = price;
+        this.visible = visible;
+        this.color = color;
+        this.category = category;
     }
 }
 

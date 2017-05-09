@@ -14,6 +14,14 @@ class Catalog {
         this.products.push(product);
     }
 
+    removeProduct(productId) {
+        const index = this.products.findIndex((product) => product.id == productId);
+
+        if (index >= 0) {
+            this.products.splice(index, 1);
+        }
+    }
+
     getCategory(categoryId) {
         return this.categories.find((category) => category.id == categoryId);
     }

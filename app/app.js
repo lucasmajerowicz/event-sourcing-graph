@@ -5,14 +5,14 @@ const SetProductCategoryEvent = require('./js/events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('./js/events/SetProductAttributeEvent');
 const EventRepository = require('./js/EventRepository');
 
-const event = new AddCatalogEvent(7, 'my 111');
+const event = new AddCatalogEvent('c_id', 'my 111');
 
 const catalog = event.process();
 
 const event2 = new AddCategoryEvent(catalog, 'c1', 'cat1');
 const event3 = new AddProductEvent(catalog, 'p1', 'pp');
 const event4 = new SetProductCategoryEvent(catalog, 'p1', 'c1');
-const event5 = new SetProductAttributeEvent(catalog, 'p1', 'price', 100);
+const event5 = new SetProductAttributeEvent(catalog, 'p1', 'price', '100');
 
 event2.process();
 event3.process();
@@ -21,17 +21,15 @@ event5.process();
 
 console.log(JSON.stringify(catalog));
 
-EventRepository.getEventsForCatalog(7).then(result => {
-    console.log('done');
-     const singleRecord = result.records;
-
-    result.records.forEach((record) => {
-        console.log(record.get(0).properties);
-    })
-    // const node = singleRecord.get(0);
-    //
-    // console.log(node.properties.name);
+EventRepository.getEventsForCatalog('c_id').then(result => {
+    let catalog = null;
+    result.forEach((event) => {
+        event.process();
+        catalog = event.catalog;
+    });
+    console.log(catalog);
 });
+
 
 /*
 EventRepository.addEvent(event).then(result => {

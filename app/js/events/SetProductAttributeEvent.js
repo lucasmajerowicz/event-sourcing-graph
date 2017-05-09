@@ -10,7 +10,7 @@ class SetProductAttributeEvent {
     process() {
         const product = this.catalog.getProduct(this.productId);
 
-        product.setAttribute(this.key, this.value);
+        product[this.key] = this.value;
     }
 }
 

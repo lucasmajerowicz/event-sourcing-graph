@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.9.1",
+    "bootstrap": "^3.3.7",
     "clean-webpack-plugin": "^0.1.9",
     "eslint": "^3.0.0",
     "eslint-loader": "^1.4.0",
