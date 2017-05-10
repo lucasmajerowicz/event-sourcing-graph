@@ -22,6 +22,14 @@ class Catalog {
         }
     }
 
+    removeCategory(categoryId) {
+        const index = this.categories.findIndex((category) => category.id == categoryId);
+
+        if (index >= 0) {
+            this.categories.splice(index, 1);
+        }
+    }
+
     getCategory(categoryId) {
         return this.categories.find((category) => category.id == categoryId);
     }
