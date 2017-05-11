@@ -1,8 +1,8 @@
-const AddCatalogEvent = require('./events/AddCatalogEvent');
-const AddCategoryEvent = require('./events/AddCategoryEvent');
-const AddProductEvent = require('./events/AddProductEvent');
-const SetProductCategoryEvent = require('./events/SetProductCategoryEvent');
-const SetProductAttributeEvent = require('./events/SetProductAttributeEvent');
+const AddCatalogEvent = require('../events/AddCatalogEvent');
+const AddCategoryEvent = require('../events/AddCategoryEvent');
+const AddProductEvent = require('../events/AddProductEvent');
+const SetProductCategoryEvent = require('../events/SetProductCategoryEvent');
+const SetProductAttributeEvent = require('../events/SetProductAttributeEvent');
 
 const neo4j = require('neo4j-driver').v1;
 
@@ -20,20 +20,18 @@ class EventRepository {
         return JSON.stringify(cloneEvent).replace(/\"([^(\")"]+)\":/g, "$1:");
     }
 
-    static addEvent(event) {
-        if (event.name == 'AddCatalogEvent') {
-            return EventRepository.createAddCatalogEvent(event);
+    static addEvent(event, parentId) {
+        if (parentId) {
+            return EventRepository.appendEvent(event, parentId);
         } else {
-            return EventRepository.appendEvent(event);
+            return EventRepository.createAddCatalogEvent(event);
         }
     }
 
-    static appendEvent(event) {
+    static appendEvent(event, parentId) {
         const serializedEvent = EventRepository.serializeEvent(event);
-        const command = `MATCH (root:Event { catalogId: "${event.catalog.id}" })-[:APPEND*0..]->(x:Event)
-WITH COLLECT(x) AS path
-MATCH (last:Event) where ID(last) = ID(LAST(path))
-CREATE (last)-[r:APPEND]->(e:Event ${serializedEvent})`;
+        const command = `MATCH (parent:Event) where ID(parent) = ${parentId}
+CREATE (parent)-[r:APPEND]->(e:Event ${serializedEvent})`;
 
         return session.run(command);
     }

@@ -85,16 +85,30 @@ class UiUpdater {
     }
 
     static processEvent(event) {
+        if (events.length > 0) {
+            event.parent = events[events.length - 1];
+        }
         event.process();
+
         events.push(event);
 
         UiGraph.update(events, (event) => {
-            console.log(event, 'aa');
+            UiUpdater.restoreToEvent(event);
         });
 
         UiUpdater.update(event.catalog);
 
-        return event.catalog;
+        window.catalog = event.catalog;
+    }
+
+    static restoreToEvent(event) {
+        const events = [];
+        do {
+            events.push(event);
+            event = event.parent;
+        } while (event != null);
+
+
     }
 
     static update(catalog) {

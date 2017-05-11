@@ -3,7 +3,7 @@ const AddCategoryEvent = require('./js/events/AddCategoryEvent');
 const AddProductEvent = require('./js/events/AddProductEvent');
 const SetProductCategoryEvent = require('./js/events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('./js/events/SetProductAttributeEvent');
-const EventRepository = require('./js/EventRepository');
+const EventRepository = require('./js/server/EventRepository');
 
 const event = new AddCatalogEvent('c_id', 'my 111');
 
@@ -27,7 +27,7 @@ EventRepository.getEventsForCatalog('c_id').then(result => {
         event.process();
         catalog = event.catalog;
     });
-    console.log(catalog);
+//    console.log(catalog);
 });
 
 

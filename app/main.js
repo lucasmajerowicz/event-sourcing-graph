@@ -6,10 +6,11 @@ const AddProductEvent = require('./js/events/AddProductEvent');
 const SetProductCategoryEvent = require('./js/events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('./js/events/SetProductAttributeEvent');
 
+window.catalog = null;
 
 const catalogEvent = new AddCatalogEvent("1234", "My Catalog");
 
-let catalog = UiUpdater.processEvent(catalogEvent);
+UiUpdater.processEvent(catalogEvent);
 
 const categoryEvent = new AddCategoryEvent(catalog, "1", "Cat 1");
 const productEvent = new AddProductEvent(catalog, "2", "prod", "1", "yes", "red");
