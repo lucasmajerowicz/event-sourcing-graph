@@ -21,17 +21,26 @@ class EventRepository {
     }
 
     static addEvent(event, parentId) {
+        let promise;
         if (parentId) {
-            return EventRepository.appendEvent(event, parentId);
+            promise = EventRepository.appendEvent(event, parentId);
         } else {
-            return EventRepository.createAddCatalogEvent(event);
+            promise = EventRepository.createAddCatalogEvent(event);
         }
+
+        return new Promise((resolve, reject) => {
+            promise.then(result => {
+                const eventId = result.records[0].get(0).identity.low;
+
+                resolve(eventId);
+            });
+        });
     }
 
     static appendEvent(event, parentId) {
         const serializedEvent = EventRepository.serializeEvent(event);
         const command = `MATCH (parent:Event) where ID(parent) = ${parentId}
-CREATE (parent)-[r:APPEND]->(e:Event ${serializedEvent})`;
+CREATE (parent)-[r:APPEND]->(e:Event ${serializedEvent}) RETURN e`;
 
         return session.run(command);
     }
@@ -41,6 +50,33 @@ CREATE (parent)-[r:APPEND]->(e:Event ${serializedEvent})`;
         const command = `CREATE (e:Event ${serializedEvent}) RETURN e`;
 
         return session.run(command);
+    }
+
+    static getCatalog(eventId) {
+        return new Promise((resolve, reject) => {
+            EventRepository.getChainOfEvents(eventId).then((events) => {
+                events.forEach((event) => event.process());
+                resolve(events[0].catalog);
+            });
+        });
+    }
+
+    static getChainOfEvents(eventId) {
+        const command = `MATCH (x:Event)-[:APPEND*0..]->(e:Event) where ID(e) = ${eventId}
+RETURN x`;
+        return new Promise((resolve, reject) => {
+            session.run(command).then(result => {
+                let catalog = null;
+                const events = result.records.reverse().map((record) => {
+                    const event = EventRepository.deserializeEvent(record.get(0).properties, catalog);
+                    catalog = event.catalog;
+
+                    return event;
+                });
+
+                resolve(events);
+            });
+        });
     }
 
     static getEventsForCatalog(catalogId) {
@@ -62,7 +98,7 @@ RETURN x`;
     }
 
     static deserializeEvent(object, catalog) {
-        switch(object.name) {
+        switch (object.name) {
             case 'AddCatalogEvent':
                 return new AddCatalogEvent(object.catalogId, object.catalogName);
             case 'AddCategoryEvent':
