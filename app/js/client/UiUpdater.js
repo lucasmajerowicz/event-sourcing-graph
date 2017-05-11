@@ -4,6 +4,7 @@ const RemoveCategoryEvent = require('../events/RemoveCategoryEvent');
 const SetProductCategoryEvent = require('../events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('../events/SetProductAttributeEvent');
 const UiGraph = require('./UiGraph');
+const CatalogAPI = require('./CatalogAPI');
 
 const events = [];
 
@@ -85,7 +86,11 @@ class UiUpdater {
     }
 
     static processEvent(event) {
-        if (events.length > 0) {
+        return UiUpdater.processEvents([event]);
+    }
+
+    static processEvents(events) {
+   /*     if (events.length > 0) {
             event.parent = events[events.length - 1];
         }
         event.process();
@@ -94,11 +99,13 @@ class UiUpdater {
 
         UiGraph.update(events, (event) => {
             UiUpdater.restoreToEvent(event);
+        });*/
+
+        CatalogAPI.appendEvents(events, window.eventId).then((catalog) => {
+            window.catalog = catalog;
+
+            UiUpdater.update(catalog);
         });
-
-        UiUpdater.update(event.catalog);
-
-        window.catalog = event.catalog;
     }
 
     static restoreToEvent(event) {
@@ -107,8 +114,6 @@ class UiUpdater {
             events.push(event);
             event = event.parent;
         } while (event != null);
-
-
     }
 
     static update(catalog) {

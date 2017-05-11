@@ -1,22 +1,18 @@
 import {generateUUID} from './js/util';
 const UiUpdater = require('./js/client/UiUpdater');
+const CatalogAPI = require('./js/client/CatalogAPI');
 const AddCatalogEvent = require('./js/events/AddCatalogEvent');
 const AddCategoryEvent = require('./js/events/AddCategoryEvent');
 const AddProductEvent = require('./js/events/AddProductEvent');
 const SetProductCategoryEvent = require('./js/events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('./js/events/SetProductAttributeEvent');
 
-window.catalog = null;
+window.eventId = 127;
 
-const catalogEvent = new AddCatalogEvent("1234", "My Catalog");
-
-UiUpdater.processEvent(catalogEvent);
-
-const categoryEvent = new AddCategoryEvent(catalog, "1", "Cat 1");
-const productEvent = new AddProductEvent(catalog, "2", "prod", "1", "yes", "red");
-
-UiUpdater.processEvent(categoryEvent);
-UiUpdater.processEvent(productEvent);
+CatalogAPI.getCatalog(window.eventId).then((catalog) => {
+    window.catalog = catalog;
+    UiUpdater.update(catalog);
+});
 
 function addProduct(name, price, visible, color, category) {
     const event = new AddProductEvent(catalog,
@@ -30,18 +26,19 @@ function updateProduct(id, name, price, visible, color, categoryId) {
     const product = catalog.getProduct(id);
     const events = [];
 
-    if (name != product.name)
+    if (name != (product.name || '') )
         events.push(new SetProductAttributeEvent(catalog, id, 'name', name));
-    if (price != product.price)
+    if (price != (product.price || ''))
         events.push(new SetProductAttributeEvent(catalog, id, 'price', price));
-    if (visible != product.visible)
+    if (visible != (product.visible || null))
         events.push(new SetProductAttributeEvent(catalog, id, 'visible', visible));
-    if (color != product.color)
+    if (color != (product.color || ''))
         events.push(new SetProductAttributeEvent(catalog, id, 'color', color));
-    if (category != product.category)
+    if ((categoryId && !product.category) || (product.category && product.category.id != categoryId))
         events.push(new SetProductCategoryEvent(catalog, id, categoryId));
 
-    events.forEach((event) => UiUpdater.processEvent(event));
+    console.log(events);
+    UiUpdater.processEvents(events);
 }
 
 

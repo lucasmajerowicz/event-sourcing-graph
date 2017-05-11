@@ -1,9 +1,9 @@
 class Catalog {
-    constructor(id, name) {
+    constructor(id, name, categories = [], products = []) {
         this.id = id;
         this.name = name;
-        this.categories = [];
-        this.products = [];
+        this.categories = categories;
+        this.products = products;
     }
 
     addCategory(category) {
