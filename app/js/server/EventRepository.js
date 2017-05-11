@@ -1,6 +1,8 @@
 const AddCatalogEvent = require('../events/AddCatalogEvent');
 const AddCategoryEvent = require('../events/AddCategoryEvent');
 const AddProductEvent = require('../events/AddProductEvent');
+const RemoveCategoryEvent = require('../events/RemoveCategoryEvent');
+const RemoveProductEvent = require('../events/RemoveProductEvent');
 const SetProductCategoryEvent = require('../events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('../events/SetProductAttributeEvent');
 
@@ -40,8 +42,9 @@ class EventRepository {
     static appendEvent(event, parentId) {
         const serializedEvent = EventRepository.serializeEvent(event);
         const command = `MATCH (parent:Event) where ID(parent) = ${parentId}
-CREATE (parent)-[r:APPEND]->(e:Event ${serializedEvent}) RETURN e`;
+CREATE (parent)-[r:APPEND {parentId: ${parentId}}]->(e:Event ${serializedEvent}) RETURN e`;
 
+        console.log(command);
         return session.run(command);
     }
 
@@ -63,11 +66,11 @@ CREATE (parent)-[r:APPEND]->(e:Event ${serializedEvent}) RETURN e`;
 
     static getChainOfEvents(eventId) {
         const command = `MATCH (x:Event)-[:APPEND*0..]->(e:Event) where ID(e) = ${eventId}
-RETURN x`;
+RETURN x order by id(x)`;
         return new Promise((resolve, reject) => {
             session.run(command).then(result => {
                 let catalog = null;
-                const events = result.records.reverse().map((record) => {
+                const events = result.records.map((record) => {
                     const event = EventRepository.deserializeEvent(record.get(0).properties, catalog);
                     catalog = event.catalog;
 
@@ -80,14 +83,19 @@ RETURN x`;
     }
 
     static getEventsForCatalog(catalogId) {
-        const command = `MATCH (root:Event { catalogId: "${catalogId}" })-[:APPEND*0..]->(x:Event)
-RETURN x`;
+        const command = `MATCH path=(root:Event { catalogId: "${catalogId}" })-[:APPEND*0..]-()
+WITH NODES(path) AS np
+WITH REDUCE(s=[], i IN RANGE(0, LENGTH(np)-2, 1) | s + {p:np[i], c:np[i+1]}) AS cpairs
+UNWIND cpairs AS pairs
+WITH DISTINCT pairs AS ps
+RETURN ps.p, ps.c;`;
         return new Promise((resolve, reject) => {
             session.run(command).then(result => {
-                let catalog = null;
                 const events = result.records.map((record) => {
-                    const event = EventRepository.deserializeEvent(record.get(0).properties, catalog);
-                    catalog = event.catalog;
+                    const event = record.get(1).properties;
+
+                    event.id = record.get(1).identity.low;
+                    event.parentId = record.get(0).identity.low;
 
                     return event;
                 });
@@ -109,7 +117,10 @@ RETURN x`;
                 return new SetProductCategoryEvent(catalog, object.productId, object.categoryId);
             case 'SetProductAttributeEvent':
                 return new SetProductAttributeEvent(catalog, object.productId, object.key, object.value);
-
+            case 'RemoveProductEvent':
+                return new RemoveProductEvent(catalog, object.productId);
+            case 'RemoveCategoryEvent':
+                return new RemoveCategoryEvent(catalog, object.categoryId);
         }
     }
 }

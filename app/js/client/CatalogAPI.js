@@ -19,13 +19,15 @@ class CatalogAPI {
 
         myHeaders.append("Content-Type", "application/json");
 
+        events.forEach((event) => event.catalog = null);
+
         return new Promise((resolve, reject) => {
             const payload = {
                 method: 'post',
                 headers: myHeaders,
                 body: JSON.stringify({events: events, parentId})
             };
-            console.log(payload);
+            console.log(JSON.stringify({events: events, parentId}));
             fetch(url + '/events/', payload).then(function (response) {
                 return response.json();
             }).then(function (object) {
