@@ -10,6 +10,7 @@ class AddProductEvent {
         this.productColor = productColor;
         this.productCategory = productCategory;
         this.name = 'AddProductEvent';
+        this.parent = null;
     }
 
     process() {

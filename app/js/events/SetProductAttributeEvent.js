@@ -5,6 +5,7 @@ class SetProductAttributeEvent {
         this.key = key;
         this.value = value;
         this.name = 'SetProductAttributeEvent';
+        this.parent = null;
     }
 
     process() {

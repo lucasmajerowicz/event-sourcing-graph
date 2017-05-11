@@ -6,6 +6,7 @@ class AddCatalogEvent {
         this.catalogName = catalogName;
         this.name = 'AddCatalogEvent';
         this.catalog =  new Catalog(this.catalogId, this.catalogName);
+        this.parent = null;
     }
 
     process() {

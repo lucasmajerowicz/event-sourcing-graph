@@ -4,6 +4,7 @@ class SetProductCategoryEvent {
         this.productId = productId;
         this.categoryId = categoryId;
         this.name = 'SetProductCategoryEvent';
+        this.parent = null;
     }
 
     process() {

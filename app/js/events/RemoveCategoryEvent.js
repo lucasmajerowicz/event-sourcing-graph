@@ -3,6 +3,7 @@ class RemoveCategoryEvent {
         this.catalog = catalog;
         this.categoryId = categoryId;
         this.name = 'RemoveCategoryEvent';
+        this.parent = null;
     }
 
     process() {

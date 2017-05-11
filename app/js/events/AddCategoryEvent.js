@@ -6,6 +6,7 @@ class AddCategoryEvent {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.name = 'AddCategoryEvent';
+        this.parent = null;
     }
 
     process() {

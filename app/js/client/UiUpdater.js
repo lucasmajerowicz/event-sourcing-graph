@@ -3,6 +3,9 @@ const RemoveProductEvent = require('../events/RemoveProductEvent');
 const RemoveCategoryEvent = require('../events/RemoveCategoryEvent');
 const SetProductCategoryEvent = require('../events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('../events/SetProductAttributeEvent');
+const UiGraph = require('./UiGraph');
+
+const events = [];
 
 class UiUpdater {
     static  updateCategoryTable(catalog) {
@@ -83,7 +86,15 @@ class UiUpdater {
 
     static processEvent(event) {
         event.process();
+        events.push(event);
+
+        UiGraph.update(events, (event) => {
+            console.log(event, 'aa');
+        });
+
         UiUpdater.update(event.catalog);
+
+        return event.catalog;
     }
 
     static update(catalog) {

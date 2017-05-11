@@ -3,12 +3,21 @@
 <head>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/sigma.js/1.2.0/sigma.min.js"
+            src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.2.7/raphael.min.js"
             crossorigin="anonymous"></script>
+
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.min.js"
+            crossorigin="anonymous"></script>
+
  <script
             src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
             crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.css"
+          crossorigin="anonymous">
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -24,10 +33,30 @@
             crossorigin="anonymous"></script>
 
     <style>
-        #graph {
-            width: 300px;
-            height: 300px;
-            border: 1px solid red;
+        #graph { height: 600px; margin: 5px; margin: 15px auto; border: 3px solid #DDD; border-radius: 3px; }
+
+        .node { font-size: 11px; }
+
+        .node.big-commpany {
+            cursor: pointer;
+            padding: 0 2px;
+            min-width: 60px;
+            text-align: center;
+            height: 30px;
+            border: 2px solid #E8E8E3;
+            border-radius: 2px;
+            box-shadow: 1px 1px 1px rgba(0,0,0,.5);
+            background: #fff;
+        }
+
+        .node.big-commpany .node-name {
+            line-height: 30px;
+            color: #000;
+        }
+
+        .node.big-commpany:hover .node-name {
+            color: #000;
+            text-shadow: 1px 1px rgba(0,0,0,.15);
         }
     </style>
 </head>
@@ -35,7 +64,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-6" style="background-color:yellow;">
+        <div class="col-sm-6">
             <button type="button" data-toggle="modal" data-target="#productFormModal" class="btn btn-primary">Add Product</button>
             <button type="button" data-toggle="modal" data-target="#categoryFormModal" class="btn btn-primary">Add Category</button>
             <br/>
@@ -79,7 +108,7 @@
                 </table>
             </div>
         </div>
-        <div class="col-sm-6" style="background-color:pink;">
+        <div class="col-sm-6">
             <div id="graph">
 
             </div>
