@@ -11,7 +11,8 @@ class UiGraph {
                 nodeAlign: "BOTTOM",
                 connectors: {
                     style: {
-                        "stroke-width": 2
+                        "stroke-width": 1,
+                        "stroke": "#3C3C3A"
                     }
                 }
             },

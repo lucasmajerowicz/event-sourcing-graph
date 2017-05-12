@@ -1,7 +1,6 @@
 const AddCatalogEvent = require('../events/AddCatalogEvent');
 const RemoveProductEvent = require('../events/RemoveProductEvent');
 const RemoveCategoryEvent = require('../events/RemoveCategoryEvent');
-const SetProductCategoryEvent = require('../events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('../events/SetProductAttributeEvent');
 const UiGraph = require('./UiGraph');
 const CatalogAPI = require('./CatalogAPI');
@@ -42,7 +41,7 @@ class UiUpdater {
         catalog.products.forEach((product) => {
             let categoryName = '';
             if (product.category) {
-                categoryName = product.category.name;
+                categoryName = catalog.getCategory(product.category).name;
             }
 
             tbody
@@ -125,7 +124,7 @@ class UiUpdater {
         $('#productColor').val(product.color);
 
         if (product.category) {
-            $('#productCategory').val(product.category.id);
+            $('#productCategory').val(product.category);
         }
 
         $('#productFormModal').modal('show');

@@ -3,7 +3,6 @@ const AddCategoryEvent = require('../events/AddCategoryEvent');
 const AddProductEvent = require('../events/AddProductEvent');
 const RemoveCategoryEvent = require('../events/RemoveCategoryEvent');
 const RemoveProductEvent = require('../events/RemoveProductEvent');
-const SetProductCategoryEvent = require('../events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('../events/SetProductAttributeEvent');
 
 const neo4j = require('neo4j-driver').v1;
@@ -113,11 +112,8 @@ RETURN x,LAST(r)`;
             case 'AddCategoryEvent':
                 return new AddCategoryEvent(catalog, object.categoryId, object.categoryName);
             case 'AddProductEvent':
-
                 return new AddProductEvent(catalog, object.productId, object.productName, object.productPrice,
                     object.productVisible, object.productColor, object.productCategory);
-            case 'SetProductCategoryEvent':
-                return new SetProductCategoryEvent(catalog, object.productId, object.categoryId);
             case 'SetProductAttributeEvent':
                 return new SetProductAttributeEvent(catalog, object.productId, object.key, object.value);
             case 'RemoveProductEvent':
