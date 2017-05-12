@@ -14,6 +14,16 @@ class CatalogAPI {
         });
     }
 
+    static getAllCatalogEvents(catalogId) {
+        return new Promise((resolve, reject) => {
+            fetch(url + '/events/' + catalogId).then(function (response) {
+                return response.json();
+            }).then(function (object) {
+                resolve(object.events);
+            });
+        });
+    }
+
     static appendEvents(events, parentId) {
         const myHeaders = new Headers();
 
@@ -27,20 +37,25 @@ class CatalogAPI {
                 headers: myHeaders,
                 body: JSON.stringify({events: events, parentId})
             };
-            console.log(JSON.stringify({events: events, parentId}));
+
             fetch(url + '/events/', payload).then(function (response) {
                 return response.json();
             }).then(function (object) {
-                resolve(CatalogAPI.deserializeCatalog(object));
+                const catalog = CatalogAPI.deserializeCatalog(object);
+
+                resolve(catalog);
             });
         });
     }
 
     static deserializeCatalog(object) {
-        return new Catalog(object.id,
+        const catalog = new Catalog(object.id,
             object.name,
             object.categories.map((o) => new Category(o.id, o.name)),
-            object.products.map((o) => new Product(o.id, o.name, o.price, o.visible, o.color, o.category)))
+            object.products.map((o) => new Product(o.id, o.name, o.price, o.visible, o.color, o.category)));
+
+        catalog.eventId = object.eventId;
+        return catalog
 
     }
 }

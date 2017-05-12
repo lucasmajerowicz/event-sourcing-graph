@@ -59,7 +59,10 @@ CREATE (parent)-[r:APPEND {parentId: ${parentId}}]->(e:Event ${serializedEvent})
         return new Promise((resolve, reject) => {
             EventRepository.getChainOfEvents(eventId).then((events) => {
                 events.forEach((event) => event.process());
-                resolve(events[0].catalog);
+                const catalog = events[0].catalog;
+
+                catalog.eventId = parseInt(eventId);
+                resolve(catalog);
             });
         });
     }
@@ -83,19 +86,17 @@ RETURN x order by id(x)`;
     }
 
     static getEventsForCatalog(catalogId) {
-        const command = `MATCH path=(root:Event { catalogId: "${catalogId}" })-[:APPEND*0..]-()
-WITH NODES(path) AS np
-WITH REDUCE(s=[], i IN RANGE(0, LENGTH(np)-2, 1) | s + {p:np[i], c:np[i+1]}) AS cpairs
-UNWIND cpairs AS pairs
-WITH DISTINCT pairs AS ps
-RETURN ps.p, ps.c;`;
+        const command = `MATCH (root:Event { catalogId: "${catalogId}" })-[r:APPEND*0..]->(x:Event)
+RETURN x,LAST(r)`;
         return new Promise((resolve, reject) => {
             session.run(command).then(result => {
                 const events = result.records.map((record) => {
-                    const event = record.get(1).properties;
+                    const event = record.get(0).properties;
 
-                    event.id = record.get(1).identity.low;
-                    event.parentId = record.get(0).identity.low;
+                    event.id = record.get(0).identity.low;
+                    if (record.get(1) && record.get(1).properties.parentId) {
+                        event.parentId = record.get(1).properties.parentId.low;
+                    }
 
                     return event;
                 });
@@ -112,7 +113,9 @@ RETURN ps.p, ps.c;`;
             case 'AddCategoryEvent':
                 return new AddCategoryEvent(catalog, object.categoryId, object.categoryName);
             case 'AddProductEvent':
-                return new AddProductEvent(catalog, object.productId, object.productName);
+
+                return new AddProductEvent(catalog, object.productId, object.productName, object.productPrice,
+                    object.productVisible, object.productColor, object.productCategory);
             case 'SetProductCategoryEvent':
                 return new SetProductCategoryEvent(catalog, object.productId, object.categoryId);
             case 'SetProductAttributeEvent':

@@ -7,12 +7,7 @@ const AddProductEvent = require('./js/events/AddProductEvent');
 const SetProductCategoryEvent = require('./js/events/SetProductCategoryEvent');
 const SetProductAttributeEvent = require('./js/events/SetProductAttributeEvent');
 
-window.eventId = 127;
-
-CatalogAPI.getCatalog(window.eventId).then((catalog) => {
-    window.catalog = catalog;
-    UiUpdater.update(catalog);
-});
+UiUpdater.setCatalog(197);
 
 function addProduct(name, price, visible, color, category) {
     const event = new AddProductEvent(catalog,

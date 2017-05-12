@@ -6,7 +6,7 @@ class Controller {
                 const event = EventRepository.deserializeEvent(eventObjects.shift());
                 EventRepository.addEvent(event, parentId).then((eventId) => {
                     Controller.insertEvents(eventObjects, eventId, callback)
-                });
+                }).catch((e) => callback(e));
             } else {
                 Controller.getCatalog(parentId).then((catalog) => {
                     callback(catalog);

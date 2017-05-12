@@ -90,30 +90,12 @@ class UiUpdater {
     }
 
     static processEvents(events) {
-   /*     if (events.length > 0) {
-            event.parent = events[events.length - 1];
-        }
-        event.process();
-
-        events.push(event);
-
-        UiGraph.update(events, (event) => {
-            UiUpdater.restoreToEvent(event);
-        });*/
-
         CatalogAPI.appendEvents(events, window.eventId).then((catalog) => {
             window.catalog = catalog;
+            window.eventId = catalog.eventId;
 
             UiUpdater.update(catalog);
         });
-    }
-
-    static restoreToEvent(event) {
-        const events = [];
-        do {
-            events.push(event);
-            event = event.parent;
-        } while (event != null);
     }
 
     static update(catalog) {
@@ -127,6 +109,12 @@ class UiUpdater {
             categoriesSelect.append($('<option></option>').val(category.id).html(category.name));
         });
         categoriesSelect.val('');
+
+        CatalogAPI.getAllCatalogEvents(catalog.id).then((events) => {
+            UiGraph.update(events, catalog.eventId, (event) => {
+                UiUpdater.setCatalog(event.id);
+            });
+        });
     }
 
     static openUpdateForm(product) {
@@ -152,6 +140,14 @@ class UiUpdater {
         $('#productCategory').val('');
 
         $('#categoryName').val('');
+    }
+
+    static setCatalog(eventId) {
+        window.eventId = eventId;
+        CatalogAPI.getCatalog(eventId).then((catalog) => {
+            window.catalog = catalog;
+            UiUpdater.update(catalog);
+        });
     }
 }
 

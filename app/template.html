@@ -10,7 +10,7 @@
             src="https://cdnjs.cloudflare.com/ajax/libs/treant-js/1.0/Treant.min.js"
             crossorigin="anonymous"></script>
 
- <script
+    <script
             src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
             crossorigin="anonymous"></script>
@@ -33,20 +33,38 @@
             crossorigin="anonymous"></script>
 
     <style>
-        #graph { height: 600px; margin: 5px; margin: 15px auto; border: 3px solid #DDD; border-radius: 3px; }
+        #graph {
+            height: 300px;
+            margin: 5px;
+            margin: 15px auto;
+            border: 3px solid #DDD;
+            border-radius: 3px;
+        }
 
-        .node { font-size: 11px; }
+        .node {
+            font-size: 11px;
+        }
 
-        .node.big-commpany {
+        .node {
             cursor: pointer;
-            padding: 0 2px;
+            padding-top: 4px;
+            padding-left: 2px;
+            padding-right: 2px;
             min-width: 60px;
             text-align: center;
             height: 30px;
-            border: 2px solid #E8E8E3;
+            border: 2px solid #000;
             border-radius: 2px;
-            box-shadow: 1px 1px 1px rgba(0,0,0,.5);
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
             background: #fff;
+        }
+
+        .node.selected {
+            background: green;
+        }
+
+        .node.selectedParent {
+            background: lightgreen;
         }
 
         .node.big-commpany .node-name {
@@ -56,7 +74,7 @@
 
         .node.big-commpany:hover .node-name {
             color: #000;
-            text-shadow: 1px 1px rgba(0,0,0,.15);
+            text-shadow: 1px 1px rgba(0, 0, 0, .15);
         }
     </style>
 </head>
@@ -64,9 +82,17 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-sm-12">
+            <div id="graph">
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-6">
-            <button type="button" data-toggle="modal" data-target="#productFormModal" class="btn btn-primary">Add Product</button>
-            <button type="button" data-toggle="modal" data-target="#categoryFormModal" class="btn btn-primary">Add Category</button>
+            <button type="button" data-toggle="modal" data-target="#categoryFormModal" class="btn btn-primary">Add
+                Category
+            </button>
             <br/>
             <br/>
 
@@ -86,6 +112,14 @@
                     </tbody>
                 </table>
             </div>
+
+        </div>
+        <div class="col-sm-6">
+            <button type="button" data-toggle="modal" data-target="#productFormModal" class="btn btn-primary">Add
+                Product
+            </button>
+            <br/>
+            <br/>
 
             <div class="panel panel-default">
                 <!-- Default panel contents -->
@@ -107,11 +141,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="col-sm-6">
-            <div id="graph">
 
-            </div>
 
         </div>
     </div>
