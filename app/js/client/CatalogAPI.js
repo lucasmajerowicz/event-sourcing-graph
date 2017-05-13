@@ -68,6 +68,27 @@ class CatalogAPI {
         return catalog
 
     }
+
+    static deleteEvent(eventId) {
+        const myHeaders = new Headers();
+
+        myHeaders.append("Content-Type", "application/json");
+
+        return new Promise((resolve, reject) => {
+            const payload = {
+                method: 'delete',
+                headers: myHeaders
+            };
+
+            fetch(url + '/events/' + eventId, payload).then(function (response) {
+                return response.json();
+            }).then(function (object) {
+                const catalog = CatalogAPI.deserializeCatalog(object);
+
+                resolve(catalog);
+            });
+        });
+    }
 }
 
 module.exports = CatalogAPI;

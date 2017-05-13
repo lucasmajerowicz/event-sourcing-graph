@@ -78,3 +78,9 @@ $('#btnAddCategory').click(() => {
     UiUpdater.resetUpdateForms();
 });
 
+$('#deleteEvent').click(() => {
+    UiUpdater.deleteEvent();
+});
+
+
+

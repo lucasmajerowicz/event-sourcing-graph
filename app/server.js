@@ -50,6 +50,15 @@ app.get('/default', function(request, response){
     Controller.insertEvents(events, null, (catalog) => {
         response.send(catalog);    // echo the result back
     })
+});
+
+
+app.delete('/events/:id', function(request, response){
+    Controller.deleteEvent(request.params.id).then((catalog) => {
+        response.send(catalog);    // echo the result back
+    }).catch((e) => {
+        response.send(e);    // echo the result back
+    })
 
 });
 

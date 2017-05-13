@@ -43,7 +43,6 @@ class EventRepository {
         const command = `MATCH (parent:Event) where ID(parent) = ${parentId}
 CREATE (parent)-[r:APPEND {parentId: ${parentId}}]->(e:Event ${serializedEvent}) RETURN e`;
 
-        console.log(command);
         return session.run(command);
     }
 
@@ -121,6 +120,27 @@ RETURN x,LAST(r)`;
             case 'RemoveCategoryEvent':
                 return new RemoveCategoryEvent(catalog, object.categoryId);
         }
+    }
+
+    static deleteEvent(eventId) {
+        const command = `MATCH path=(e:Event)-[r:APPEND*0..]->(x:Event) where ID(e) = ${eventId} 
+        With e, last(relationships(path)) as r 
+        OPTIONAL MATCH (p:Event)-[rp:APPEND]->(e:Event) DELETE rp,r,e RETURN p`;
+
+        return new Promise((resolve, reject) => {
+            session.run(command).then(result => {
+                const record = result.records[0];
+
+                if (record && record.get(0)) {
+                    const event = record.get(0).properties;
+
+                    event.id = record.get(0).identity.low;
+                    resolve(event);
+                } else {
+                    resolve(null);
+                }
+            });
+        });
     }
 }
 

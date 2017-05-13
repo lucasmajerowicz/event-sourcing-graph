@@ -163,6 +163,15 @@ class UiUpdater {
             UiUpdater.update(catalog);
         });
     }
+
+    static deleteEvent() {
+        CatalogAPI.deleteEvent(UiUpdater.eventId).then((catalog) => {
+            window.catalog = catalog;
+            UiUpdater.eventId = catalog.eventId || null;
+
+            UiUpdater.update(catalog);
+        });
+    }
 }
 
 UiUpdater.eventId = null;

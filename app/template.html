@@ -34,18 +34,14 @@
 
     <style>
         #graph {
-            height: 300px;
-            margin: 5px;
-            margin: 15px auto;
+            height: 250px;
+            margin-bottom: 15px;
             border: 3px solid #DDD;
             border-radius: 3px;
         }
 
         .node {
             font-size: 11px;
-        }
-
-        .node {
             cursor: pointer;
             padding-top: 4px;
             padding-left: 2px;
@@ -77,13 +73,18 @@
             color: #000;
             text-shadow: 1px 1px rgba(0, 0, 0, .15);
         }
+
+        button {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="padding-top: 5px;">
+            <button type="button" data-toggle="modal" id="deleteEvent" class="btn btn-primary">Remove Event</button>
             <div id="graph">
 
             </div>
