@@ -10,6 +10,7 @@ var cors = require('cors');
 
 var app = express();
 app.use(cors());
+app.set('port', 80);
 app.use(bodyParser.json());
 
 app.post('/events', function(request, response){
