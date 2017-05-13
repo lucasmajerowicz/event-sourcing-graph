@@ -14,6 +14,16 @@ class CatalogAPI {
         });
     }
 
+    static getDefaultCatalog() {
+        return new Promise((resolve, reject) => {
+            fetch(url + '/default').then(function (response) {
+                return response.json();
+            }).then(function (object) {
+                resolve(CatalogAPI.deserializeCatalog(object));
+            });
+        });
+    }
+
     static getAllCatalogEvents(catalogId) {
         return new Promise((resolve, reject) => {
             fetch(url + '/events/' + catalogId).then(function (response) {

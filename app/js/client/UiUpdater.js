@@ -41,7 +41,11 @@ class UiUpdater {
         catalog.products.forEach((product) => {
             let categoryName = '';
             if (product.category) {
-                categoryName = catalog.getCategory(product.category).name;
+                const category = catalog.getCategory(product.category);
+
+                if (category) {
+                    categoryName = category.name;
+                }
             }
 
             tbody
@@ -89,9 +93,9 @@ class UiUpdater {
     }
 
     static processEvents(events) {
-        CatalogAPI.appendEvents(events, window.eventId).then((catalog) => {
+        CatalogAPI.appendEvents(events, UiUpdater.eventId).then((catalog) => {
             window.catalog = catalog;
-            window.eventId = catalog.eventId;
+            UiUpdater.eventId = catalog.eventId;
 
             UiUpdater.update(catalog);
         });
@@ -142,12 +146,25 @@ class UiUpdater {
     }
 
     static setCatalog(eventId) {
-        window.eventId = eventId;
+        UiUpdater.eventId = eventId;
         CatalogAPI.getCatalog(eventId).then((catalog) => {
             window.catalog = catalog;
             UiUpdater.update(catalog);
         });
     }
+
+    static setDefaultCatalog() {
+        CatalogAPI.getDefaultCatalog().then((catalog) => {
+            window.catalog = catalog;
+            UiUpdater.eventId = catalog.eventId;
+
+            localStorage.setItem("eventId", catalog.eventId);
+
+            UiUpdater.update(catalog);
+        });
+    }
 }
+
+UiUpdater.eventId = null;
 
 module.exports = UiUpdater;

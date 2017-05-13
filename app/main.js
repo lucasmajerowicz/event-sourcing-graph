@@ -6,7 +6,20 @@ const AddCategoryEvent = require('./js/events/AddCategoryEvent');
 const AddProductEvent = require('./js/events/AddProductEvent');
 const SetProductAttributeEvent = require('./js/events/SetProductAttributeEvent');
 
-UiUpdater.setCatalog(276);
+$(function() {
+    const eventId = localStorage.getItem("eventId");
+
+    console.log('ee', eventId);
+    if (eventId) {
+        UiUpdater.setCatalog(eventId);
+    } else {
+        UiUpdater.setDefaultCatalog();
+    }
+});
+
+
+
+
 
 function addProduct(name, price, visible, color, category) {
     const event = new AddProductEvent(catalog,
