@@ -89,6 +89,22 @@ class CatalogAPI {
             });
         });
     }
+
+    static mergeEvents(eventId, secondEventId) {
+        return new Promise((resolve, reject) => {
+            const payload = {
+                method: 'post'
+            };
+
+            fetch(url + '/events/' + eventId + '/merge/' + secondEventId, payload).then(function (response) {
+                return response.json();
+            }).then(function (object) {
+                const catalog = CatalogAPI.deserializeCatalog(object);
+
+                resolve(catalog);
+            });
+        });
+    }
 }
 
 module.exports = CatalogAPI;

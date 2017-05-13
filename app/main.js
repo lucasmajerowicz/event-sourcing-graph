@@ -83,4 +83,9 @@ $('#deleteEvent').click(() => {
 });
 
 
+$('#mergeEvents').click(() => {
+    UiUpdater.mergeEvents();
+});
+
+
 

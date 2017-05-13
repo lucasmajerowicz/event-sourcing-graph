@@ -114,8 +114,14 @@ class UiUpdater {
         categoriesSelect.val('');
 
         CatalogAPI.getAllCatalogEvents(catalog.id).then((events) => {
-            UiGraph.update(events, catalog.eventId, null, (event) => {
-                UiUpdater.setCatalog(event.id);
+            UiGraph.update(events, catalog.eventId, null, (event, ctrl) => {
+                if (ctrl) {
+                    UiUpdater.secondEventId = event.id;
+                    $('#mergeEvents').prop("disabled",false);
+                } else {
+                    $('#mergeEvents').prop("disabled",true);
+                    UiUpdater.setCatalog(event.id);
+                }
             });
         });
     }
@@ -166,6 +172,15 @@ class UiUpdater {
 
     static deleteEvent() {
         CatalogAPI.deleteEvent(UiUpdater.eventId).then((catalog) => {
+            window.catalog = catalog;
+            UiUpdater.eventId = catalog.eventId || null;
+
+            UiUpdater.update(catalog);
+        });
+    }
+
+    static mergeEvents() {
+        CatalogAPI.mergeEvents(UiUpdater.eventId, UiUpdater.secondEventId).then((catalog) => {
             window.catalog = catalog;
             UiUpdater.eventId = catalog.eventId || null;
 

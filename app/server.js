@@ -52,9 +52,17 @@ app.get('/default', function(request, response){
     })
 });
 
-
 app.delete('/events/:id', function(request, response){
     Controller.deleteEvent(request.params.id).then((catalog) => {
+        response.send(catalog);    // echo the result back
+    }).catch((e) => {
+        response.send(e);    // echo the result back
+    })
+
+});
+
+app.post('/events/:id/merge/:from', function(request, response){
+    Controller.mergeEvents(request.params.id, request.params.from).then((catalog) => {
         response.send(catalog);    // echo the result back
     }).catch((e) => {
         response.send(e);    // echo the result back

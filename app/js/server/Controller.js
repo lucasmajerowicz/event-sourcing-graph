@@ -35,6 +35,14 @@ class Controller {
             });
         });
     }
+
+    static mergeEvents(eventId, eventFromId, callback) {
+        return new Promise((resolve, reject) => {
+            EventRepository.getEventsforMerge(eventId, eventFromId).then((events) => {
+                Controller.insertEvents(events, eventId, resolve);
+            });
+        });
+    }
 }
 
 

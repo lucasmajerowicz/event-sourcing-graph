@@ -28,10 +28,11 @@ class UiGraph {
                 index = $(e.target).find('p').attr('event-index');
             }
             const event = UiGraph.events[index];
+
+            callbackClick(event, e.ctrlKey);
+
             if (e.ctrlKey) {
                 UiGraph.update(events, selectedEventId, event.id, callbackClick);
-            } else {
-                callbackClick(event, e.ctrlKey);
             }
         });
     }
@@ -69,7 +70,7 @@ class UiGraph {
             };
 
             if (selectedEventId2 && event.id == selectedEventId2) {
-                node.HTMLclass = 'selected';
+                node.HTMLclass = 'selectedSecond';
             }
 
             nodesById[event.id] = node;
