@@ -10,7 +10,6 @@ var cors = require('cors');
 
 var app = express();
 app.use(cors());
-app.set('port', 80);
 app.use(bodyParser.json());
 
 app.post('/events', function(request, response){
@@ -71,4 +70,4 @@ app.post('/events/:id/merge/:from', function(request, response){
 
 });
 
-app.listen(3000);
+app.listen(80);
