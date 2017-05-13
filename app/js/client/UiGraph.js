@@ -1,9 +1,9 @@
 class UiGraph {
 
-    static update(events, selectedEventId, callbackClick) {
+    static update(events, selectedEventId, selectedEventId2, callbackClick) {
         UiGraph.events = events;
 
-        const rootNode = UiGraph.eventsAsTree(events, selectedEventId);
+        const rootNode = UiGraph.eventsAsTree(events, selectedEventId, selectedEventId2);
         const simple_chart_config = {
             chart: {
                 container: "#graph",
@@ -19,24 +19,25 @@ class UiGraph {
 
             nodeStructure: rootNode
         };
-        const my_chart = new Treant(simple_chart_config);
 
+        new Treant(simple_chart_config);
 
         $('#graph .node').click((e) => {
-            console.log(e.target);
             let index = $(e.target).attr('event-index');
             if (!index) {
                 index = $(e.target).find('p').attr('event-index');
             }
             const event = UiGraph.events[index];
-            console.log(event, index, UiGraph.events);
-
-            callbackClick(event);
+            if (e.ctrlKey) {
+                UiGraph.update(events, selectedEventId, event.id, callbackClick);
+            } else {
+                callbackClick(event, e.ctrlKey);
+            }
         });
     }
 
-    static eventsAsTree(events, selectedEventId) {
-        const nodesById = UiGraph.getNodesById(events);
+    static eventsAsTree(events, selectedEventId, selectedEventId2) {
+        const nodesById = UiGraph.getNodesById(events, selectedEventId2);
 
         UiGraph.markEvents(nodesById, selectedEventId);
 
@@ -54,7 +55,7 @@ class UiGraph {
         return root;
     }
 
-    static getNodesById(events) {
+    static getNodesById(events, selectedEventId2) {
         const nodesById = {};
 
         let i = 0;
@@ -66,6 +67,10 @@ class UiGraph {
                     text: event.name.replace('Event', '')
                 }).attr('event-index', i).addClass('withEvent').prop('outerHTML')
             };
+
+            if (selectedEventId2 && event.id == selectedEventId2) {
+                node.HTMLclass = 'selected';
+            }
 
             nodesById[event.id] = node;
             i++;

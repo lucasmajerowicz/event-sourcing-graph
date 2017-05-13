@@ -114,7 +114,7 @@ class UiUpdater {
         categoriesSelect.val('');
 
         CatalogAPI.getAllCatalogEvents(catalog.id).then((events) => {
-            UiGraph.update(events, catalog.eventId, (event) => {
+            UiGraph.update(events, catalog.eventId, null, (event) => {
                 UiUpdater.setCatalog(event.id);
             });
         });
