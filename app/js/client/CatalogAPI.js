@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000';
+const url = 'http://localhost';
 const Catalog = require('../models/Catalog');
 const Product = require('../models/Product');
 const Category = require('../models/Category');

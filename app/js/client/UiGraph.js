@@ -61,13 +61,23 @@ class UiGraph {
 
         let i = 0;
         events.forEach((event) => {
+            let name = event.name.replace('Event', '');
+
+            if (event.name == 'AddBranchEvent') {
+                name = event.branchName;
+            }
+
             const node = {
                 parentId: event.parentId,
                 children: [],
                 innerHTML: $('<p/>', {
-                    text: event.name.replace('Event', '')
+                    text: name
                 }).attr('event-index', i).addClass('withEvent').prop('outerHTML')
             };
+
+            if (event.name == 'AddBranchEvent') {
+                node.HTMLclass = 'branch';
+            }
 
             if (selectedEventId2 && event.id == selectedEventId2) {
                 node.HTMLclass = 'selectedSecond';
@@ -86,7 +96,10 @@ class UiGraph {
         do {
             if (node.parentId) {
                 node = nodesById[node.parentId];
-                node.HTMLclass = 'selectedParent';
+
+                if (node.HTMLclass != 'branch') {
+                    node.HTMLclass = 'selectedParent';
+                }
             } else {
                 node = null;
             }

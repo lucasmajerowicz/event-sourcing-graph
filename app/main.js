@@ -3,6 +3,7 @@ const UiUpdater = require('./js/client/UiUpdater');
 const CatalogAPI = require('./js/client/CatalogAPI');
 const AddCatalogEvent = require('./js/events/AddCatalogEvent');
 const AddCategoryEvent = require('./js/events/AddCategoryEvent');
+const AddBranchEvent = require('./js/events/AddBranchEvent');
 const AddProductEvent = require('./js/events/AddProductEvent');
 const SetProductAttributeEvent = require('./js/events/SetProductAttributeEvent');
 
@@ -87,5 +88,14 @@ $('#mergeEvents').click(() => {
     UiUpdater.mergeEvents();
 });
 
+$('#btnAddBranch').click(() => {
+    const name = $('#branchName').val();
+
+    const event = new AddBranchEvent(catalog, name);
+    UiUpdater.processEvent(event);
+
+    $('#branchFormModal').modal('hide');
+    UiUpdater.resetUpdateForms();
+});
 
 

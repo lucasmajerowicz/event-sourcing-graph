@@ -57,7 +57,7 @@
         }
 
         .node.selected {
-            background: green;
+            background: lightsalmon;
         }
         .node.selectedSecond {
             background: lightblue;
@@ -65,6 +65,10 @@
 
         .node.selectedParent {
             background: lightgreen;
+        }
+
+        .node.branch {
+            background: hotpink;
         }
 
         .node.big-commpany .node-name {
@@ -78,6 +82,7 @@
         }
 
         button {
+            margin-left: 5px;
             margin-bottom: 5px;
         }
     </style>
@@ -89,13 +94,16 @@
         <div class="col-sm-12" style="padding-top: 5px;">
             <button type="button"  id="deleteEvent" class="btn btn-primary">Remove Event</button>
             <button type="button"  id="mergeEvents" class="btn btn-primary" disabled="true">Merge Events</button>
+            <button type="button" data-toggle="modal" data-target="#branchFormModal" class="btn btn-primary">Add
+                Branch
+            </button>
             <div id="graph">
 
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <button type="button" data-toggle="modal" data-target="#categoryFormModal" class="btn btn-primary">Add
                 Category
             </button>
@@ -118,7 +126,7 @@
             </div>
 
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <button type="button" data-toggle="modal" data-target="#productFormModal" class="btn btn-primary">Add
                 Product
             </button>
@@ -208,6 +216,30 @@
                     <input type="name" class="form-control" id="categoryName" placeholder="Enter name">
                 </div>
                 <button type="submit" class="btn btn-primary" id="btnAddCategory">Submit</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="branchFormModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Add Branch</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="categoryName">Name</label>
+                    <input type="name" class="form-control" id="branchName" placeholder="Enter name">
+                </div>
+                <button type="submit" class="btn btn-primary" id="btnAddBranch">Submit</button>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -4,6 +4,7 @@ const AddProductEvent = require('../events/AddProductEvent');
 const RemoveCategoryEvent = require('../events/RemoveCategoryEvent');
 const RemoveProductEvent = require('../events/RemoveProductEvent');
 const SetProductAttributeEvent = require('../events/SetProductAttributeEvent');
+const AddBranchEvent = require('../events/AddBranchEvent');
 
 const neo4j = require('neo4j-driver').v1;
 
@@ -11,7 +12,6 @@ const uri = 'bolt://localhost';
 
 const driver = neo4j.driver(uri, neo4j.auth.basic('neo4j', '1234'));
 const session = driver.session();
-
 
 class EventRepository {
     static serializeEvent(event) {
@@ -119,6 +119,8 @@ RETURN x,LAST(r)`;
                 return new RemoveProductEvent(catalog, object.productId);
             case 'RemoveCategoryEvent':
                 return new RemoveCategoryEvent(catalog, object.categoryId);
+            case 'AddBranchEvent':
+                return new AddBranchEvent(catalog, object.branchName);
         }
     }
 
