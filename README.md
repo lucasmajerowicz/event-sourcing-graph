@@ -1,4 +1,4 @@
-#Event Sourcing in Node.js: add git-like functionality to your application
+Event Sourcing in Node.js: add git-like functionality to your application
 ========
 ### [Running Demo](http://storage.googleapis.com/event-sourcing/index.html)
 
