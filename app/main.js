@@ -30,7 +30,7 @@ function addProduct(name, price, visible, color, category) {
     UiUpdater.processEvent(event);
 }
 
-function updateProduct(id, name, price, visible, color, categoryId) {
+function updateProduct(id, name, price, visible, color, category) {
     const product = catalog.getProduct(id);
     const events = [];
 
@@ -42,7 +42,7 @@ function updateProduct(id, name, price, visible, color, categoryId) {
         events.push(new SetProductAttributeEvent(catalog, id, 'visible', visible));
     if (color != (product.color || ''))
         events.push(new SetProductAttributeEvent(catalog, id, 'color', color));
-    if ((categoryId && !product.category) || (product.category && product.category.id != categoryId))
+    if (category != (product.category || '') )
         events.push(new SetProductAttributeEvent(catalog, id, 'category', categoryId));
 
     console.log(events);

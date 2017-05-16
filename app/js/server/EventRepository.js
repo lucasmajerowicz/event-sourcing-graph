@@ -147,8 +147,8 @@ RETURN x,LAST(r)`;
 
     static getEventsforMerge(eventId, eventFromId) {
         const command = `MATCH (e1:Event)<-[:APPEND*0..]-(x:Event)-[:APPEND*0..]->(e2:Event)
-MATCH (x)-[:APPEND*0..]->(e:Event)-[:APPEND*0..]->(e2)
-where ID(e1) = ${eventId} and ID(e2) =${eventFromId} and ID(e) <> ID(x)
+        MATCH (x)-[:APPEND*0..]->(e:Event)-[:APPEND*0..]->(e2) where ID(e1) = ${eventId} 
+        and ID(e2) =${eventFromId} and ID(e) <> ID(x)
         return e`;
 
         return new Promise((resolve, reject) => {
