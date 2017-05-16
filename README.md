@@ -1,8 +1,8 @@
-#Real-time Collaboration Application in Three.js
+#Event Sourcing in Node.js: add git-like functionality to your application
 ========
-### [Running Demo](http://storage.googleapis.com/hecodes/app/index.html)
+### [Running Demo](http://storage.googleapis.com/event-sourcing/index.html)
 
-### Accompanying blog post [here](http://hecodes.com/2016/08/building-real-time-collaboration-applications-three-js)
+### Accompanying blog post [here](http://hecodes.com/2017/05/event-sourcing-in-node-js-add-git-like-functionality-to-your-application)
 
 ## Installation
 Clone repository and run
